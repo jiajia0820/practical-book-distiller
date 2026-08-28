@@ -1,7 +1,0 @@
-interface:
-  display_name: "Practical Book Distiller"
-  short_description: "实用书按问题蒸馏、快速浏览核心观点并回溯原文"
-  default_prompt: "Use $practical-book-distiller to turn this practical book into a problem-oriented reading package with source traceability."
-
-policy:
-  allow_implicit_invocation: true
