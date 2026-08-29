@@ -13,8 +13,12 @@ For a stable PDF in an Obsidian vault, use a direct page link:
 ```
 
 - For `PDF p. 123–127`, use `#page=123` as the target and keep the visible range in the alias.
+- Treat the range as a recommended context window, not as a text transcription. The deep link opens its first page; display the full range and optionally add a separate core hit-page link.
+- Expand ordinary hits about 2–4 pages before/after as a starting point/typical upper bound, not a quota. Shorten when adjacent pages repeat. The window must cover definition/premise → claim or steps → key example/figure explanation → qualification/conclusion; split at new subsections, new cases, unrelated sidebars, or argument turns. Keep a unit at 8 pages by default or less; longer windows need named sub-units and a reason.
+- For figures, include the preceding definition and following interpretation; for cases, include situation → action → result → limitation. Merge only contiguous pages serving one logical unit; do not combine non-contiguous passages.
+- Do not collapse a multi-page logical unit to a single keyword page. For image-only, chart, or unreliable-OCR pages, point to the original PDF and explicitly ask for manual inspection.
 - For separate passages, create separate page links rather than one vague chapter link.
-- Validate that every `N` is within the source PDF page count and sample-open high-priority anchors.
+- Validate that every start/end/core page is within the source PDF page count and sample-open high-priority anchors plus their context windows.
 - If the host cannot deep-link, link the original file and display the exact page/chapter/locator next to it. Do not replace the missing deep link with an unnecessary text mirror.
 
 `#page=N` means the PDF viewer's 1-based page index, not necessarily the printed page label shown inside the book. Record a separate `printed_page_label` when the distinction matters; never silently add a front-matter offset.

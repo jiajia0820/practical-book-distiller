@@ -24,6 +24,7 @@ canonical:
   entry: 20_Notes/Reading/example-book/example-book｜入口.md
   navigator: 20_Notes/Reading/example-book/example-book｜问题导航.md
   index: 20_Notes/Reading/example-book/example-book｜结构与来源索引.md
+  ai_note: 90_AI/example-book/example-book｜蒸馏说明.md
   evidence: null
 files:
   - path: 20_Notes/Reading/example-book/概念/核心模型.md
@@ -63,7 +64,8 @@ rerun:
 ## 来源与工作产物
 
 - 原始 PDF/EPUB、封面和二进制附件放在 `_attachments/Books/`（若宿主已有更具体的书籍附件目录，遵循宿主规则并在 manifest 记录）。不要把原书复制进 skill 目录。
-- `90_AI/<book-slug>/` 默认只保留 manifest、解析损失和确有必要的转换记录。文本/OCR 可在蒸馏过程中临时使用，但不持久化整本镜像；只有用户明确要求全文检索，或原文件无法可靠打开/定位时，才保留证据层并在 manifest 写明原因。
+- `90_AI/<book-slug>/` 默认保留 manifest、统一的 `<book-title>｜蒸馏说明.md`（机器维护的统计口径、S/A 选择理由、PDF 解析规则、证据边界、重跑规则和 Bases 实现规则）以及解析损失和确有必要的转换记录。文本/OCR 可在蒸馏过程中临时使用，但不持久化整本镜像；只有用户明确要求全文检索，或原文件无法可靠打开/定位时，才保留证据层并在 manifest 写明原因。
+- 人类入口只保留读者作判断所需的最小提醒；不要把上述 AI 说明复制到入口。入口、问题导航和结构/来源索引可以互相链接，但每种角色只维护一份 canonical 内容。
 - `20_Notes/Reading/读书笔记索引.md`（如存在）只链接每本书的入口页，不逐张列出卡片；新书只增加一个入口链接。
 
 ## 命名、链接与 ID
@@ -92,5 +94,5 @@ rerun:
 - 每本书存在唯一 `20_Notes/Reading/<book-slug>/` 工作区；其入口、问题导航、结构/来源索引和卡片均不在 Reading 根目录平铺。
 - 卡片只位于本书的 `概念/`、`方法/`、必要的 `案例/`，或有明确判定的 `30_Knowledge/`；目录深度适中。
 - 原始来源位于 `_attachments/Books/`（或已记录的宿主等价位置），必要工作产物位于 `90_AI/<book-slug>/`。PDF direct 模式下无需存在证据层文件。
-- `90_AI/<book-slug>/manifest.yaml`（或经声明的唯一等价文件）可被机器读取，且每个逻辑角色都有 canonical path、状态和来源；没有重复 ID、重复入口或“副本/新版/2”式重跑产物。
+- `90_AI/<book-slug>/manifest.yaml`（或经声明的唯一等价文件）可被机器读取，且每个逻辑角色都有 canonical path、状态和来源；若生成 AI 说明，则 manifest 的 `canonical.ai_note` 指向唯一的 `<book-title>｜蒸馏说明.md`；没有重复 ID、重复入口或“副本/新版/2”式重跑产物。
 - 全局读书索引只指向入口；所有 wikilink 能解析；旧笔记未被未经授权地迁移。

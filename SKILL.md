@@ -41,6 +41,20 @@ Identify the source, reader's current questions, desired depth, language, and ou
 
 Keep the original EPUB/PDF or an authorized source reference and choose a source mode before extraction. For a stable paginated PDF in an Obsidian vault, default to `pdf-direct`: cards and navigation pages link to `[[_attachments/Books/<book-file>.pdf#page=<N>|PDF p. <N>]]`. For a page range, link the first relevant page and display the full range; use separate links for separate passages. Text may be parsed temporarily to understand and verify the book, but do not persist a whole-book text/OCR mirror unless the user explicitly requests searchable full text or the host cannot reliably open the original source. Record parsing loss, OCR uncertainty, source mode, page/locator availability, and any retained fallback in the manifest. Do not repair uncertain text by guessing.
 
+### 原文上下文窗口（PDF）
+
+原文导航不能只留下孤立的命中页。对稳定 PDF，默认同时记录三个层次：
+
+- **核心命中页**：最直接承载主张、步骤、图表或案例的页；
+- **建议回读范围**：帮助读者理解前提、展开、例子和结论的连续页段；
+- **链接起始页**：Obsidian 深链实际打开的范围首页，并在可见文字中显示完整范围。
+
+普通概念或方法从命中页向前后扩展约 2–4 页；这是起点/通常上限，不是硬性凑页数规则：先按逻辑单元取范围，前后页重复时可以缩短。范围至少覆盖“定义/前提 → 主张或步骤 → 关键例子/图表解释 → 限定或结论”；遇到新小节、新案例、无关侧栏或论点转折就切分。单个阅读单元默认不超过 8 页，超出时命名并拆成多个单元。范围只是导航，不是全文转写。
+
+图表范围应包含图表前的定义和图表后的解释；案例范围应包含情境、行动、结果与局限；只有连续且属于同一逻辑单元的页面才能合并。相邻卡片若目的相同且范围重叠，应合并阅读窗口，但保留各卡片自己的核心命中页。
+
+图表、扫描页、无文本页或 OCR 不可靠的页面必须提示“请人工查看原 PDF”，并在来源记录中设置 `manual_review: true`；不得用推测性文字补齐。页码范围和起始页都必须在实际 PDF 页数内，并与 manifest 中的来源记录一致。
+
 ### L2 — 快速浏览与命题台账
 
 Scan the table of contents, preface, conclusion, chapter openings, summaries, figures, and repeated terminology. Mark high-value themes, decision points, methods, and evidence-bearing passages. Build a claim ledger with: claim, problem served, priority, source anchor, evidence level, and whether it is selected or deferred. Aim for a small set of core propositions (usually 3–7), but let the book determine the final number.
@@ -53,11 +67,11 @@ Read [references/card-schema.md](references/card-schema.md) before writing cards
 - method cards for a repeatable action or decision procedure;
 - case/evidence cards only when a case has independent transfer value or is needed to prevent a core claim being misunderstood.
 
-Read [references/evidence-policy.md](references/evidence-policy.md) whenever a card contains evidence, research, numbers, or quotations. Every selected S-level proposition must have an accurate chapter/section anchor. If context is needed to interpret it, include the necessary qualification in the card and link to the original source location. Retain an extracted-text fallback only under the explicit conditions in L1.
+Read [references/evidence-policy.md](references/evidence-policy.md) whenever a card contains evidence, research, numbers, or quotations. Every selected S-level proposition must have an accurate chapter/section anchor. If context is needed to interpret it, include the necessary qualification in the card and link to the original source location. For PDF anchors, provide a recommended context range and, when useful, a separate core hit-page link; the link opens the range's first page. Retain an extracted-text fallback only under the explicit conditions in L1.
 
 ### L4 — 入口与按问题导航
 
-Read [references/navigation-template.md](references/navigation-template.md). Produce three distinct roles: one default entry, one problem navigator, and one structure/source index. For each meaningful problem provide one first-choice card, no more than two supporting cards, an original-source anchor, and a ten-minute starting action. The full book map must distinguish selected topics from intentionally deferred topics so the reader cannot mistake the package for total coverage. Place these pages and book-scoped cards under the canonical `20_Notes/Reading/<book-slug>/` workspace from [references/vault-layout.md](references/vault-layout.md); do not flatten a book's files into the Reading root. The global reading index should link only to the entry page.
+Read [references/navigation-template.md](references/navigation-template.md). Produce three distinct roles: one fixed human entry, one problem navigator, and one structure/source index. The entry must follow the seven-part order in the reference: positioning, three metrics, useful situations, reader-facing caveat, all selected S/A cards in `reading_order`, a four-column chapter map, then all problem entrances; end there. Keep machine-only statistics, S/A rationale, parser/OCR details, evidence audit, and rerun instructions in `90_AI/<book-slug>/<book-title>｜蒸馏说明.md`, not in the entry. For each meaningful problem provide one first-choice card, no more than two supporting cards, an original-source anchor, and a ten-minute starting action. The full book map must distinguish selected topics from intentionally deferred topics so the reader cannot mistake the package for total coverage. Place these pages and book-scoped cards under the canonical `20_Notes/Reading/<book-slug>/` workspace from [references/vault-layout.md](references/vault-layout.md); do not flatten a book's files into the Reading root. The global reading index should link only to the entry page.
 
 ### L5 — 结构与语义验收
 
@@ -70,15 +84,16 @@ The deliverable contains, as applicable:
 1. **Source artifact** — the original file or a stable source link, retained according to workspace and copyright rules.
 2. **Source backtrace** — direct links to the original file at reliable pages/locations. A retained searchable text layer is optional, not the default, and must state why direct source access is insufficient or that the user requested it.
 3. **Selective cards** — concept/principle and method cards with stable IDs, restrained fields, priorities, evidence labels, and source backtraces. Independent case cards are exceptional.
-4. **Reading navigation** — a default entry, problem navigator, and structure/source index with non-overlapping responsibilities.
+4. **Reading navigation** — a fixed human entry, problem navigator, and structure/source index with non-overlapping responsibilities. The entry ends after the problem entrances; it is not a dump of technical metadata.
 5. **Scope note** — core propositions, selected topics, deferred topics, source limits, and any claims deliberately excluded.
-6. **Layout manifest** — the book slug, canonical paths for every logical role, source/work-product paths, `create` versus `update` decisions, unresolved conflicts, and the rerun strategy. A dry-run manifest is produced before writing; the final machine-readable manifest is canonically stored at `90_AI/<book-slug>/manifest.yaml` (or one declared JSON equivalent) and updated after writing.
+6. **AI maintenance note** — `90_AI/<book-slug>/<book-title>｜蒸馏说明.md`, when using an Obsidian vault. Keep S/A selection rationale, statistical definitions, PDF/OCR parsing rules, evidence and safety boundaries, Bases implementation notes, and rerun instructions here. This is for machine maintenance and audit, not a second reader-facing summary.
+7. **Layout manifest** — the book slug, canonical paths for every logical role, source/work-product paths, `create` versus `update` decisions, unresolved conflicts, and the rerun strategy. A dry-run manifest is produced before writing; the final machine-readable manifest is canonically stored at `90_AI/<book-slug>/manifest.yaml` (or one declared JSON equivalent) and updated after writing. If an AI maintenance note exists, record its canonical path under `canonical.ai_note`.
 
 Follow host workspace rules for folders, wikilinks, naming, and attachments. Do not copy the complete book into this skill directory and do not overwrite unrelated notes. Keep book-scoped cards in `20_Notes/Reading/<book-slug>/概念/`, `方法/`, or (only when justified) `案例/`. Promote a card to `30_Knowledge/` only when it is explicitly judged reusable across books and the canonical relationship is recorded. On rerun, update/merge existing canonical files by stable ID; never create a duplicate flat file or silently move/rename an old note.
 
 ## 最小字段契约
 
-All cards use the common metadata in [references/card-schema.md](references/card-schema.md): stable `id`, `kind`, `priority`, `problem`, `source_chapter`, `source_location`, `anchor_granularity`, and (when relevant) `evidence_level`. Omit optional fields that have no content; never fill a field with generic prose merely to satisfy a template.
+All cards use the common metadata in [references/card-schema.md](references/card-schema.md): stable `id`, `kind`, `priority`, `problem`, `source_chapter`, `source_location`, `anchor_granularity`, and (when relevant) `evidence_level`. Selected S/A cards shown on the human entry additionally require deterministic `reading_order` and a concise `display_summary`; see the schema reference. Omit optional fields that have no content; never fill a field with generic prose merely to satisfy a template.
 
 Concept cards must state a conclusion, the problem it solves, the mechanism, source-grounded explanation, examples/evidence with attribution, credibility boundary, application, and an original-source link.
 
@@ -93,7 +108,7 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 - **伪全书覆盖**: publish selected/deferred status and a chapter map; card count is never a coverage metric.
 - **摘要堆积**: delete duplicated explanations and stories unless they change interpretation, transfer, or action.
 - **证据幻觉**: attach an evidence label and precise anchor; use “作者声称/书中转述” rather than implying validation.
-- **错误回溯**: check the card against the actual section, not the chapter title guessed from memory.
+- **错误回溯**: check the card against the actual section, not the chapter title guessed from memory; do not reduce a contextual passage to a single page when the logic spans several pages.
 - **导航重复**: one default entry, one problem navigator, one source index; cross-link rather than repeat lists.
 - **不可执行的方法**: no method card without a ten-minute start, success threshold, and adjustment rule.
 - **模板主义**: fields are a minimum contract, not a reason to create a card for every chapter or leave empty sections.
@@ -103,9 +118,14 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 
 ### 结构验收
 
-- At least one original source or stable source reference is preserved. PDF anchors open the original file at valid pages when the host supports deep links. A retained text/evidence mirror exists only when explicitly requested or needed as a documented fallback.
+- At least one original source or stable source reference is preserved. PDF anchors open the original file at valid pages when the host supports deep links. Each important anchor has a visible recommended context range plus a core hit page where applicable; the range starts at the linked page. A retained text/evidence mirror exists only when explicitly requested or needed as a documented fallback.
 - All wikilinks/links resolve; there are zero duplicate knowledge IDs; every card has a stable ID and source backtrace.
+- For PDF cards with contextual anchors, `source_context_start <= source_core_page <= source_context_end`; all three pages are within the PDF when a core page is declared.
 - The three navigation roles are present and do not duplicate each other.
+- The human entry follows the fixed seven-part order, displays every selected S/A card in `reading_order`, places the four-column chapter map before the problem entrances, and ends after those entrances.
+- The entry's card view exposes only title and `display_summary`; machine-only statistics, parser/OCR details, evidence audit, and rerun rules are in the unified AI distillation note.
+- Every selected S/A card has a unique positive `reading_order` and a reader-facing `display_summary`; the static fallback list uses the same order.
+- Every chapter-map row has exactly four columns. Any wikilink alias inside a Markdown table escapes the separator as `\|`; no raw alias pipe is present.
 - The package has zero unresolved scaffold markers and states all intentional omissions.
 - The final manifest names one canonical `20_Notes/Reading/<book-slug>/` workspace. The Reading root contains no new flat entry, navigator, index, concept card, or method card for this book.
 - Concept and method cards are physically grouped under the book workspace's `概念/` and `方法/` directories; exceptional case/full-text directories are created only when justified. Any `30_Knowledge/` card has an explicit cross-book reuse decision and a link back to its book-scoped source.
@@ -118,8 +138,10 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 - In a usability test, at least 90% of those prompts reach the first-choice card within three clicks.
 - A reader can move from a chosen problem to a core conclusion and one action within fifteen minutes.
 - 100% of S-level propositions have accurate chapter/section anchors and an evidence label.
+- For every S-level or otherwise important PDF anchor, verify the context fields and reason; chart/case/method/argument-turn windows are not single-page unless the source itself is genuinely one page and the exception is stated.
 - Every method card can be started within ten minutes and defines a success threshold plus a one-variable adjustment rule.
 - Manually sample high-value topics from the table of contents and assess proposition coverage; do not infer quality from card count.
 - Report unresolved parsing loss, weak evidence, or unverified anchors instead of claiming certainty.
+- For sampled high-value anchors, confirm that the recommended context range contains the necessary setup and qualification, not just the keyword hit page; confirm range endpoints are within the PDF page count.
 
 At handoff, list files, line counts, validation commands and outputs, and the remaining human-review judgments (especially source accuracy, priority, and whether a method transfers beyond the book's examples).
