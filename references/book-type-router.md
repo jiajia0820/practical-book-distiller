@@ -43,3 +43,4 @@ Start with the table of contents, preface, conclusion, and chapter summaries. Cl
 ## Human review gates
 
 Ask for human review when the type is ambiguous, when the source is incomplete, or when the reader's intended use changes the safety bar. The agent may produce a navigation map and source audit while waiting, but must not fill the gap with invented evidence or advice.
+

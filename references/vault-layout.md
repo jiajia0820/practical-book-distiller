@@ -96,3 +96,4 @@ rerun:
 - 原始来源位于 `_attachments/Books/`（或已记录的宿主等价位置），必要工作产物位于 `90_AI/<book-slug>/`。PDF direct 模式下无需存在证据层文件。
 - `90_AI/<book-slug>/manifest.yaml`（或经声明的唯一等价文件）可被机器读取，且每个逻辑角色都有 canonical path、状态和来源；若生成 AI 说明，则 manifest 的 `canonical.ai_note` 指向唯一的 `<book-title>｜蒸馏说明.md`；没有重复 ID、重复入口或“副本/新版/2”式重跑产物。
 - 全局读书索引只指向入口；所有 wikilink 能解析；旧笔记未被未经授权地迁移。
+
