@@ -41,6 +41,17 @@ Each problem row or block contains exactly:
 
 The navigator should give a three-click path from the entry page to the first-choice card. Do not list all related cards, duplicate card prose, or route the reader to a generic index before the first answer.
 
+### 原文范围写法
+
+每个重要问题至少提供一个带上下文的原文阅读单元，不要只写孤立的 `PDF p. N`。建议格式：
+
+```md
+原文回读：建议阅读 PDF p. 118–122（链接从 p. 118 打开）；核心命中页：p. 120
+[[_attachments/Books/示例书.pdf#page=118|PDF p. 118–122（建议回读范围）]] · [[_attachments/Books/示例书.pdf#page=120|核心命中页 p. 120]]
+```
+
+普通命中点通常向前后扩展约 2–4 页，作为起点/通常上限而非凑页数规则；前后重复时可缩短。范围至少覆盖定义/前提、主张或步骤、关键例子/图表解释、限定/结论；图表还要含前定义与后解释，案例还要含情境→行动→结果→局限。遇到新小节、新案例、无关侧栏或论点转折立即切分；默认单元不超过 8 页，过长时拆分并说明目的。仅合并连续且同一逻辑单元的页面；相邻卡片窗口重复时优先合并窗口。链接只负责打开起始页，不转写范围内全文；无文本页、图表页或 OCR 不可靠时标注“请人工查看原 PDF”并设置 `manual_review: true`。
+
 ## 3. Structure/source index
 
 This page is for completeness and machine retrieval, not the default reading experience. It contains:
@@ -65,7 +76,7 @@ These paths are shortcuts into the same original source, not separate summaries 
 
 ## Link and duplication rules
 
-- The default entry links to the navigator and index; the navigator links directly to cards and anchors; the index links to source units and all cards.
+- The default entry links to the navigator and index; the navigator links directly to cards and contextual source ranges; the index links to source units and all cards. Keep a separate core-page link only when it materially speeds verification.
 - A card owns its explanation. Navigation pages own ordering and choice, not repeated prose.
 - Keep one canonical title and ID per concept or method. If two chapter discussions are merged, list both source anchors in the card.
 - Avoid a separate case page unless the card schema's transfer-value test is met; embed ordinary examples in the parent card.
@@ -83,4 +94,3 @@ Before handoff, test at least eight problem prompts (or all honest prompts for a
 5. Confirm that the ten-minute action has a trigger, behavior, artifact, and success signal.
 
 Target a first-choice hit within three clicks for at least 90% of prompts and a problem-to-conclusion-plus-action path within fifteen minutes. Record misses and fix the navigation role or card priority; do not solve misses by adding more links to every page.
-
