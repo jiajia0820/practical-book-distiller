@@ -17,6 +17,8 @@ Every selected card has these machine-readable fields:
 | `anchor_granularity` | `section`, `subsection`, `page`, `paragraph`, or `chapter` | Coarse granularity requires a context warning and an original-source fallback; use retained text only when the source-mode exception permits it |
 | `evidence_level` | Value from evidence policy | Required when a card makes an evidence, research, numerical, or causal claim |
 
+For a paginated PDF, cards that depend on surrounding context should also expose (in frontmatter or a clearly labelled body block) `source_context_start`, `source_context_end`, `source_core_page`, and a short `context_reason`; set `manual_review: true` for chart/image/OCR pages. The range's deep link opens its first page; it is a navigation window, not a copied text block. Keep endpoints within the actual PDF. S-level claims with a distinct page hit must provide `source_core_page`; omit it only for a pure chapter/section anchor with no single useful hit page.
+
 Use normal Obsidian frontmatter or the host system's equivalent. Keep IDs ASCII and human-auditable. Preserve wikilinks and source URLs where the host supports them. Omit optional fields rather than filling them with boilerplate.
 
 ## Concept/principle card
@@ -30,7 +32,7 @@ Create this card only when the book offers a reusable model, distinction, mechan
 5. **依据与例子** — clearly labelled author experience, anecdote, reported study, or checked evidence.
 6. **可信度边界** — what the source does not establish, what is contested, and when to read the original context.
 7. **如何应用** — one or two concrete uses, not a generic motivational slogan.
-8. **原文回溯** — a working link or locator using the common metadata.
+8. **原文回溯** — a working link or locator using the common metadata, with a context range and optional core hit page for PDF sources.
 
 If a concept has no distinct mechanism or application, keep it in the claim ledger or chapter map instead of making a card.
 
@@ -45,7 +47,7 @@ Create this card when a reader can repeat an action, routine, checklist, or deci
 5. **何时使用** — the trigger or situation in which the method is relevant.
 6. **失败与调整** — common failure signal and exactly one variable to adjust before retrying.
 7. **成功阈值/验证指标** — a time window, count, quality bar, or other observable threshold; avoid vague “坚持下去”.
-8. **原文回溯** — a working link or locator using the common metadata.
+8. **原文回溯** — a working link or locator using the common metadata, with a context range and optional core hit page for PDF sources.
 
 A method without a start action, success threshold, or adjustment rule is an idea, not an executable method card.
 
@@ -69,4 +71,3 @@ If the case can fit in a concept or method card without losing meaning, embed it
 - Mark `B` for optional context, a non-essential example, or a useful but weakly supported extension.
 - A low priority does not mean false; it means “not a first stop”.
 - Maintain a selected/deferred ledger at book level so readers can see what was intentionally left in the original source. If a retained text layer exists by exception, name it explicitly in the manifest.
-

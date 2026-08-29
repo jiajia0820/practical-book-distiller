@@ -41,6 +41,20 @@ Identify the source, reader's current questions, desired depth, language, and ou
 
 Keep the original EPUB/PDF or an authorized source reference and choose a source mode before extraction. For a stable paginated PDF in an Obsidian vault, default to `pdf-direct`: cards and navigation pages link to `[[_attachments/Books/<book-file>.pdf#page=<N>|PDF p. <N>]]`. For a page range, link the first relevant page and display the full range; use separate links for separate passages. Text may be parsed temporarily to understand and verify the book, but do not persist a whole-book text/OCR mirror unless the user explicitly requests searchable full text or the host cannot reliably open the original source. Record parsing loss, OCR uncertainty, source mode, page/locator availability, and any retained fallback in the manifest. Do not repair uncertain text by guessing.
 
+### 原文上下文窗口（PDF）
+
+原文导航不能只留下孤立的命中页。对稳定 PDF，默认同时记录三个层次：
+
+- **核心命中页**：最直接承载主张、步骤、图表或案例的页；
+- **建议回读范围**：帮助读者理解前提、展开、例子和结论的连续页段；
+- **链接起始页**：Obsidian 深链实际打开的范围首页，并在可见文字中显示完整范围。
+
+普通概念或方法从命中页向前后扩展约 2–4 页；这是起点/通常上限，不是硬性凑页数规则：先按逻辑单元取范围，前后页重复时可以缩短。范围至少覆盖“定义/前提 → 主张或步骤 → 关键例子/图表解释 → 限定或结论”；遇到新小节、新案例、无关侧栏或论点转折就切分。单个阅读单元默认不超过 8 页，超出时命名并拆成多个单元。范围只是导航，不是全文转写。
+
+图表范围应包含图表前的定义和图表后的解释；案例范围应包含情境、行动、结果与局限；只有连续且属于同一逻辑单元的页面才能合并。相邻卡片若目的相同且范围重叠，应合并阅读窗口，但保留各卡片自己的核心命中页。
+
+图表、扫描页、无文本页或 OCR 不可靠的页面必须提示“请人工查看原 PDF”，并在来源记录中设置 `manual_review: true`；不得用推测性文字补齐。页码范围和起始页都必须在实际 PDF 页数内，并与 manifest 中的来源记录一致。
+
 ### L2 — 快速浏览与命题台账
 
 Scan the table of contents, preface, conclusion, chapter openings, summaries, figures, and repeated terminology. Mark high-value themes, decision points, methods, and evidence-bearing passages. Build a claim ledger with: claim, problem served, priority, source anchor, evidence level, and whether it is selected or deferred. Aim for a small set of core propositions (usually 3–7), but let the book determine the final number.
@@ -53,7 +67,7 @@ Read [references/card-schema.md](references/card-schema.md) before writing cards
 - method cards for a repeatable action or decision procedure;
 - case/evidence cards only when a case has independent transfer value or is needed to prevent a core claim being misunderstood.
 
-Read [references/evidence-policy.md](references/evidence-policy.md) whenever a card contains evidence, research, numbers, or quotations. Every selected S-level proposition must have an accurate chapter/section anchor. If context is needed to interpret it, include the necessary qualification in the card and link to the original source location. Retain an extracted-text fallback only under the explicit conditions in L1.
+Read [references/evidence-policy.md](references/evidence-policy.md) whenever a card contains evidence, research, numbers, or quotations. Every selected S-level proposition must have an accurate chapter/section anchor. If context is needed to interpret it, include the necessary qualification in the card and link to the original source location. For PDF anchors, provide a recommended context range and, when useful, a separate core hit-page link; the link opens the range's first page. Retain an extracted-text fallback only under the explicit conditions in L1.
 
 ### L4 — 入口与按问题导航
 
@@ -93,7 +107,7 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 - **伪全书覆盖**: publish selected/deferred status and a chapter map; card count is never a coverage metric.
 - **摘要堆积**: delete duplicated explanations and stories unless they change interpretation, transfer, or action.
 - **证据幻觉**: attach an evidence label and precise anchor; use “作者声称/书中转述” rather than implying validation.
-- **错误回溯**: check the card against the actual section, not the chapter title guessed from memory.
+- **错误回溯**: check the card against the actual section, not the chapter title guessed from memory; do not reduce a contextual passage to a single page when the logic spans several pages.
 - **导航重复**: one default entry, one problem navigator, one source index; cross-link rather than repeat lists.
 - **不可执行的方法**: no method card without a ten-minute start, success threshold, and adjustment rule.
 - **模板主义**: fields are a minimum contract, not a reason to create a card for every chapter or leave empty sections.
@@ -103,8 +117,9 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 
 ### 结构验收
 
-- At least one original source or stable source reference is preserved. PDF anchors open the original file at valid pages when the host supports deep links. A retained text/evidence mirror exists only when explicitly requested or needed as a documented fallback.
+- At least one original source or stable source reference is preserved. PDF anchors open the original file at valid pages when the host supports deep links. Each important anchor has a visible recommended context range plus a core hit page where applicable; the range starts at the linked page. A retained text/evidence mirror exists only when explicitly requested or needed as a documented fallback.
 - All wikilinks/links resolve; there are zero duplicate knowledge IDs; every card has a stable ID and source backtrace.
+- For PDF cards with contextual anchors, `source_context_start <= source_core_page <= source_context_end`; all three pages are within the PDF when a core page is declared.
 - The three navigation roles are present and do not duplicate each other.
 - The package has zero unresolved scaffold markers and states all intentional omissions.
 - The final manifest names one canonical `20_Notes/Reading/<book-slug>/` workspace. The Reading root contains no new flat entry, navigator, index, concept card, or method card for this book.
@@ -118,8 +133,10 @@ Use the labels and anchor rules in [references/evidence-policy.md](references/ev
 - In a usability test, at least 90% of those prompts reach the first-choice card within three clicks.
 - A reader can move from a chosen problem to a core conclusion and one action within fifteen minutes.
 - 100% of S-level propositions have accurate chapter/section anchors and an evidence label.
+- For every S-level or otherwise important PDF anchor, verify the context fields and reason; chart/case/method/argument-turn windows are not single-page unless the source itself is genuinely one page and the exception is stated.
 - Every method card can be started within ten minutes and defines a success threshold plus a one-variable adjustment rule.
 - Manually sample high-value topics from the table of contents and assess proposition coverage; do not infer quality from card count.
 - Report unresolved parsing loss, weak evidence, or unverified anchors instead of claiming certainty.
+- For sampled high-value anchors, confirm that the recommended context range contains the necessary setup and qualification, not just the keyword hit page; confirm range endpoints are within the PDF page count.
 
 At handoff, list files, line counts, validation commands and outputs, and the remaining human-review judgments (especially source accuracy, priority, and whether a method transfers beyond the book's examples).
